@@ -79,8 +79,10 @@ pub fn build(b: *std.Build) void {
         exe.linkLibCpp();
         exe.addIncludePath(.{ .path = "include" });
 
-        if (target.query.os_tag == .windows)
+        if (target.query.os_tag == .windows) {
             exe.root_module.addCMacro("_WIN32", "");
+            exe.linkSystemLibrary("setupapi");
+        }
         exe.addCSourceFiles(.{ .files = &.{
             "examples/serial_example.cc",
         }, .flags = &.{
